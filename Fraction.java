@@ -130,23 +130,24 @@ public class Fraction {
     /*
      * Addition of Fractions
      */
-    public Fraction addFraction (Fraction addend1, Fraction addend2){
+    public Fraction addFraction (Fraction addend){
         int lcd;
         int computedNum;
         int nSum;
-        if (addend1.getDenominator() != addend2.getDenominator()) {
-            lcd = computeLCD(addend1.getDenominator(), addend2.getDenominator());
-            computedNum = (lcd / addend1.getDenominator()) * addend1.getNumerator();
-            addend1.setNumerator(computedNum);
-            addend1.setDenominator(lcd);
+        if (this.getDenominator() != addend.getDenominator()) {
+            lcd = computeLCD(this.getDenominator(), addend.getDenominator());
+            computedNum = (lcd / this.getDenominator()) * this.getNumerator();
+            this.setNumerator(computedNum);
+            this.setDenominator(lcd);
 
-            computedNum = (lcd / addend2.getDenominator()) * addend2.getNumerator();
-            addend2.setNumerator(computedNum);
-            addend2.setDenominator(lcd);
+            computedNum = (lcd / addend.getDenominator()) * addend.getNumerator();
+            addend.setNumerator(computedNum);
+            addend.setDenominator(lcd);
         }
-        nSum = addend1.getNumerator() + addend2.getNumerator();
-        return new Fraction(nSum, addend1.getDenominator());
+        nSum = this.getNumerator() + addend.getNumerator();
+        return new Fraction(nSum, this.getDenominator());
     }
+
 
     /*
      * Subtraction of Fractions
