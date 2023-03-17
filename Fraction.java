@@ -8,7 +8,7 @@
  *
  * Class Code and Schedule: 9315 CS122 MTh 9:00 - 10:30
  */
-package prog2.prelimgroup;
+package prog2.prelimgroup; 
 
 import java.util.Scanner;
 public class Fraction {
