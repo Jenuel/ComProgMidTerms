@@ -152,22 +152,14 @@ public class Fraction {
     /*
      * Subtraction of Fractions
      */
-    public Fraction subtractFraction(Fraction minuend, Fraction subtrahend){
-        int lcd;
+     public Fraction subtractFraction(Fraction frac2){
         int computedNum;
-        int nDifference;
-        if (minuend.getDenominator() != subtrahend.getDenominator()) {
-            lcd = computeLCD(minuend.getDenominator(), subtrahend.getDenominator());
-            computedNum = (lcd / minuend.getDenominator()) * minuend.getNumerator();
-            minuend.setNumerator(computedNum);
-            minuend.setDenominator(lcd);
+        int computedDen;
 
-            computedNum = (lcd / subtrahend.getDenominator()) * subtrahend.getNumerator();
-            subtrahend.setNumerator(computedNum);
-            subtrahend.setDenominator(lcd);
-        }
-        nDifference = minuend.getNumerator() - subtrahend.getNumerator();
-        return new Fraction(nDifference, minuend.getDenominator());
+        computedNum = ((this.getNumerator() * frac2.getDenominator()) - (this.getDenominator() * frac2.getNumerator()));
+        computedDen = this.getDenominator() * frac2.getDenominator();
+
+        return new Fraction(computedNum, computedDen);
     }
 
     /*
