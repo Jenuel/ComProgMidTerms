@@ -8,7 +8,7 @@
  *
  * Class Code and Schedule: 9315 CS122 MTh 9:00 - 10:30
  */
-package midterms;
+package prog2.prelimgroup;
 
 import java.util.Scanner;
 public class Fraction {
@@ -64,7 +64,7 @@ public class Fraction {
     /*
      * Concatenate the variables
      */
-     public String toString(){
+    public String toString(){
         if (numerator == 0 && denominator != 0) {
             return 0 + "";
         } else if (denominator == 1) {
@@ -135,7 +135,8 @@ public class Fraction {
     /*
      * Addition of Fractions
      */
-       int computedNum;
+    public Fraction addFraction (Fraction frac2){
+        int computedNum;
         int computedDen;
 
         computedNum = ((this.getNumerator() * frac2.getDenominator()) + (this.getDenominator() * frac2.getNumerator()));
@@ -148,7 +149,7 @@ public class Fraction {
     /*
      * Subtraction of Fractions
      */
-     public Fraction subtractFraction(Fraction frac2){
+    public Fraction subtractFraction(Fraction frac2){
         int computedNum;
         int computedDen;
 
@@ -199,8 +200,8 @@ public class Fraction {
 
         return new Fraction(reducedNumerator, reducedDenominator);
     }
-    
-        public MixedFraction improperToMixed() {
+
+    public MixedFraction improperToMixed() {
         if (numerator % denominator == 0)
             return new MixedFraction(this.numerator, this.getDenominator(), 0);
         else
