@@ -36,9 +36,6 @@ public class MixedFraction extends Fraction{
         return this.wholeNumber+ " " + super.toString();
 
     }
-    public Fraction toFraction(){
-        return new Fraction();
-    }
 
     public MixedFraction add (MixedFraction other) {
         int sWholeNumber;
@@ -47,6 +44,7 @@ public class MixedFraction extends Fraction{
         sFrac = this.addFraction(other);
         sFrac = sFrac.reduceFraction(sFrac);
         return new MixedFraction(sFrac.getNumerator(),sFrac.getDenominator(), sWholeNumber);
+
     }
 
     public Fraction mixedToImproper(){
