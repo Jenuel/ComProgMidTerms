@@ -73,7 +73,6 @@ public class Fraction {
         return numerator + "/" + denominator;
     }
 
-
     /*
      * Convert Fraction to Decimal
      */
@@ -135,6 +134,7 @@ public class Fraction {
     /*
      * Addition of Fractions
      */
+
     public Fraction addFraction (Fraction frac2){
         int computedNum;
         int computedDen;
@@ -200,7 +200,7 @@ public class Fraction {
 
         return new Fraction(reducedNumerator, reducedDenominator);
     }
-
+   
     public MixedFraction improperToMixed() {
         if (numerator % denominator == 0)
             return new MixedFraction(this.numerator, this.getDenominator(), 0);
