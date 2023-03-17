@@ -65,9 +65,13 @@ public class Fraction {
      * Concatenate the variables
      */
     public String toString(){
+        if (numerator == 0 && denominator != 0) {
+            return 0 + "";
+        } else if (denominator == 1) {
+            return numerator + "";
+        } else
         return numerator + "/" + denominator;
     }
-
 
     /*
      * Convert Fraction to Decimal
@@ -130,22 +134,14 @@ public class Fraction {
     /*
      * Addition of Fractions
      */
-    public Fraction addFraction (Fraction addend){
-        int lcd;
+      public Fraction addFraction (Fraction frac2){
         int computedNum;
-        int nSum;
-        if (this.getDenominator() != addend.getDenominator()) {
-            lcd = computeLCD(this.getDenominator(), addend.getDenominator());
-            computedNum = (lcd / this.getDenominator()) * this.getNumerator();
-            this.setNumerator(computedNum);
-            this.setDenominator(lcd);
+        int computedDen;
 
-            computedNum = (lcd / addend.getDenominator()) * addend.getNumerator();
-            addend.setNumerator(computedNum);
-            addend.setDenominator(lcd);
-        }
-        nSum = this.getNumerator() + addend.getNumerator();
-        return new Fraction(nSum, this.getDenominator());
+        computedNum = ((this.getNumerator() * frac2.getDenominator()) + (this.getDenominator() * frac2.getNumerator()));
+        computedDen = this.getDenominator() * frac2.getDenominator();
+
+        return new Fraction(computedNum, computedDen);
     }
 
 
@@ -202,5 +198,12 @@ public class Fraction {
         reducedDenominator = fraction.getDenominator() / gcf;
 
         return new Fraction(reducedNumerator, reducedDenominator);
+    }
+    
+     public MixedFraction improperToMixed() {
+        if (numerator % denominator == 0)
+            return new MixedFraction(this.numerator, this.getDenominator(), 0);
+        else
+            return new MixedFraction(Math.abs(this.getNumerator() % this.getDenominator()), this.getDenominator(), this.getNumerator() / this.getDenominator());
     }
 }
