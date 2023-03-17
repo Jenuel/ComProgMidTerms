@@ -8,7 +8,7 @@
  *
  * Class Code and Schedule: 9315 CS122 MTh 9:00 - 10:30
  */
-package prog2.prelimgroup;
+package midterms;
 
 import java.util.Scanner;
 public class Fraction {
@@ -41,8 +41,8 @@ public class Fraction {
     public void setNumerator(int num){numerator = num;}
 
     /*
-    * Set the denominator
-    */
+     * Set the denominator
+     */
     public void setDenominator(int den){
         denominator = den;
     }
@@ -55,15 +55,15 @@ public class Fraction {
     }
 
     /*
-    * Get the denominator
-    */
+     * Get the denominator
+     */
     public int getDenominator(){
         return denominator;
     }
 
     /*
-    * Concatenate the variables
-    */
+     * Concatenate the variables
+     */
     public String toString(){
         return numerator + "/" + denominator;
     }
@@ -212,5 +212,3 @@ public class Fraction {
         return new Fraction(reducedNumerator, reducedDenominator);
     }
 }
-
-

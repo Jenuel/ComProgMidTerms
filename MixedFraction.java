@@ -36,14 +36,6 @@ public class MixedFraction extends Fraction{
         return this.wholeNumber+ " " + super.toString();
 
     }
-    
-     public Fraction mixedToImproper(){
-        return new Fraction(this.getWholeNumber() * this.getDenominator() + this.getNumerator() ,this.getDenominator());
-    }
-    
-     public MixedFraction improperToMixed(){
-        return new MixedFraction(this.getNumerator() % this.getDenominator(), this.getDenominator(), this.getNumerator() / this.getDenominator());
-    }
 
     public MixedFraction add (MixedFraction other) {
         int sWholeNumber;
@@ -52,6 +44,15 @@ public class MixedFraction extends Fraction{
         sFrac = this.addFraction(other);
         sFrac = sFrac.reduceFraction(sFrac);
         return new MixedFraction(sFrac.getNumerator(),sFrac.getDenominator(), sWholeNumber);
+
+    }
+
+    public Fraction mixedToImproper(){
+        return new Fraction(this.getWholeNumber() * this.getDenominator() + this.getNumerator() ,this.getDenominator());
+    }
+
+    public MixedFraction improperToMixed(){
+        return new MixedFraction(this.getNumerator() % this.getDenominator(), this.getDenominator(), this.getNumerator() / this.getDenominator());
     }
 
     public MixedFraction subtract ( MixedFraction other){
