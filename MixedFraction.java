@@ -84,6 +84,23 @@ public class MixedFraction extends Fraction {
 
         return new MixedFraction(dMixed.getNumerator(), dMixed.getDenominator(), dMixed.getWholeNumber());
     }
+    
+    public MixedFraction multiply(MixedFraction other) {
+        Fraction frac1 = new Fraction();
+        Fraction frac2 = new Fraction();
+        
+        frac1 = this.mixedToImproper();
+        frac2 = other.mixedToImproper();
+        
+        Fraction pFrac = new Fraction();
+        pFrac = frac1.multiplyfraction(frac2);
+        pFrac = pFrac.reduceFraction(pFrac);
+        
+        MixedFraction pMixed = new MixedFraction();
+        pMixed = pFrac.improperToMixed();
+        
+        return new MixedFraction(pMixed.getNumerator(), pMixed.getDenominator(), pMixed.getWholeNumber());
+    }
 
     public MixedFraction divide(MixedFraction other) {
         Fraction frac1 = new Fraction();
