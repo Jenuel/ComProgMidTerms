@@ -188,15 +188,15 @@ public class Fraction {
     /*
      * Reduce a Fraction
      */
-    public Fraction reduceFraction(Fraction fraction){
+    public Fraction reduceFraction(){
         int gcf;
         int reducedNumerator;
         int reducedDenominator;
 
-        gcf = computeGCD(fraction.getNumerator(), fraction.getDenominator());
+        gcf = computeGCD(this.getNumerator(), this.getDenominator());
 
-        reducedNumerator = fraction.getNumerator() / gcf;
-        reducedDenominator = fraction.getDenominator() / gcf;
+        reducedNumerator = this.getNumerator() / gcf;
+        reducedDenominator = this.getDenominator() / gcf;
 
         return new Fraction(reducedNumerator, reducedDenominator);
     }
