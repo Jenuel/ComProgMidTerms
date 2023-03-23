@@ -35,8 +35,7 @@ public class MixedFraction extends Fraction {
     }
 
     public Fraction getFraction() {
-        return new Fraction();
-
+        return new Fraction(this.getNumerator(), this.getDenominator());
     }
 
     public String toString() {
@@ -60,7 +59,7 @@ public class MixedFraction extends Fraction {
 
         Fraction sFrac = new Fraction();
         sFrac = frac1.addFraction(frac2);
-        sFrac = sFrac.reduceFraction(sFrac);
+        sFrac = sFrac.reduceFraction();
 
         MixedFraction sMixed = new MixedFraction();
         sMixed = sFrac.improperToMixed();
@@ -77,28 +76,28 @@ public class MixedFraction extends Fraction {
 
         Fraction dFrac = new Fraction();
         dFrac = frac1.subtractFraction(frac2);
-        dFrac = dFrac.reduceFraction(dFrac);
+        dFrac = dFrac.reduceFraction();
 
         MixedFraction dMixed = new MixedFraction();
         dMixed = dFrac.improperToMixed();
 
         return new MixedFraction(dMixed.getNumerator(), dMixed.getDenominator(), dMixed.getWholeNumber());
     }
-    
+
     public MixedFraction multiply(MixedFraction other) {
         Fraction frac1 = new Fraction();
         Fraction frac2 = new Fraction();
-        
+
         frac1 = this.mixedToImproper();
         frac2 = other.mixedToImproper();
-        
+
         Fraction pFrac = new Fraction();
-        pFrac = frac1.multiplyfraction(frac2);
-        pFrac = pFrac.reduceFraction(pFrac);
-        
+        pFrac = frac1.multiplyFraction(frac2);
+        pFrac = pFrac.reduceFraction();
+
         MixedFraction pMixed = new MixedFraction();
         pMixed = pFrac.improperToMixed();
-        
+
         return new MixedFraction(pMixed.getNumerator(), pMixed.getDenominator(), pMixed.getWholeNumber());
     }
 
@@ -111,7 +110,7 @@ public class MixedFraction extends Fraction {
 
         Fraction qFrac = new Fraction();
         qFrac = frac1.divideFraction(frac2);
-        qFrac = qFrac.reduceFraction(qFrac);
+        qFrac = qFrac.reduceFraction();
 
         MixedFraction qMixed = new MixedFraction();
         qMixed = qFrac.improperToMixed();
