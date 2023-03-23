@@ -8,7 +8,7 @@
  *
  * Class Code and Schedule: 9315 CS122 MTh 9:00 - 10:30
  */
-package prog2.prelimgroup; 
+package prog2.prelimgroup;
 
 import java.util.Scanner;
 public class Fraction {
@@ -35,6 +35,10 @@ public class Fraction {
         denominator = den;
     }
 
+    public Fraction(int wholeNumVal){
+        numerator = wholeNumVal;
+        denominator = 1;
+    }
     /*
      * Set the numerator
      */
@@ -70,7 +74,7 @@ public class Fraction {
         } else if (denominator == 1) {
             return numerator + "";
         } else
-        return numerator + "/" + denominator;
+            return numerator + "/" + denominator;
     }
 
     /*
@@ -80,6 +84,7 @@ public class Fraction {
         return (double) numerator/denominator;
     }
 
+
     /*
      * Compute for greatest common divisor (gcd)
      */
@@ -88,13 +93,6 @@ public class Fraction {
             return a;
         }
         return computeGCD(b, a % b);
-    }
-
-    /*
-     * Compute for least common denominator (lcd)
-     */
-    private int computeLCD(int den1, int den2){
-        return den1*den2/computeGCD(den1,den2);
     }
 
     /*
@@ -162,12 +160,12 @@ public class Fraction {
     /*
      * Multiplication of Fractions
      */
-    public Fraction multiplyFraction(Fraction fraction1, Fraction fraction2){
+    public Fraction multiplyFraction(Fraction fraction2){
         int productNumerator;
         int productDenominator;
 
-        productNumerator = fraction1.getNumerator() * fraction2.getNumerator();
-        productDenominator = fraction1.getDenominator() * fraction2.getDenominator();
+        productNumerator = this.getNumerator() * fraction2.getNumerator();
+        productDenominator = this.getDenominator() * fraction2.getDenominator();
 
         return new Fraction(productNumerator, productDenominator);
     }
@@ -200,7 +198,7 @@ public class Fraction {
 
         return new Fraction(reducedNumerator, reducedDenominator);
     }
-   
+
     public MixedFraction improperToMixed() {
         if (numerator % denominator == 0)
             return new MixedFraction(this.numerator, this.getDenominator(), 0);
