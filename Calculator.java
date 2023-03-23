@@ -129,6 +129,51 @@ public class Calculator extends JFrame {
         content.add(secondPanel, "2");
         cl.show(content, "1");
 
+        JPanel reducePanel = new JPanel();
+        reducePanel.setLayout(new FlowLayout());
+
+        JPanel secondPanel = new JPanel();
+        secondPanel.setLayout(new BorderLayout());
+
+        content = new JPanel();
+        content.setLayout(cl);
+
+        /**
+         * Add components to the first panel (operations)
+         */
+        operationsPanel.add(new JLabel("Fraction 1: "));
+        operationsPanel.add(fraction1TF);
+        operationsPanel.add(boxOperator);
+        operationsPanel.add(new JLabel("Fraction 2: "));
+        operationsPanel.add(fraction2TF);
+        operationsPanel.add(new JLabel(" = ?"));
+
+        buttonsPanel1.add(clrBtn1);
+        buttonsPanel1.add(calculateBtn1);
+        buttonsPanel1.add(toReduce);
+
+        firstPanel.add(operationsPanel, "North");
+        firstPanel.add(buttonsPanel1, "Center");
+        firstPanel.add(operationsTA, "South");
+
+        /**
+         * Add components to the second panel (reduce fractions)
+         */
+        reducePanel.add(new JLabel("Reduce Fraction: "));
+        reducePanel.add(reduceFractionTF);
+
+        buttonsPanel2.add(clrBtn2);
+        buttonsPanel2.add(calculateBtn2);
+        buttonsPanel2.add(toOperations);
+
+        secondPanel.add(reducePanel, "North");
+        secondPanel.add(buttonsPanel2, "Center");
+        secondPanel.add(reduceTA, "South");
+
+        content.add(firstPanel, "1");
+        content.add(secondPanel, "2");
+        cl.show(content, "1");
+
         /**
          * Set window's attributes
          */
@@ -172,7 +217,6 @@ public class Calculator extends JFrame {
 
                     break;
                 case '/':
-
                     break;
             }
         }

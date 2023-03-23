@@ -8,7 +8,7 @@
  *
  * Class Code and Schedule: 9315 CS122 MTh 9:00 - 10:30
  */
-package prog2.prelimgroup;
+package prog2.prelimgroup; 
 
 import java.util.Scanner;
 public class Fraction {
@@ -135,12 +135,12 @@ public class Fraction {
      * Addition of Fractions
      */
 
-    public Fraction addFraction (Fraction frac2){
+    public Fraction addFraction (Fraction fraction2){
         int computedNum;
         int computedDen;
 
-        computedNum = ((this.getNumerator() * frac2.getDenominator()) + (this.getDenominator() * frac2.getNumerator()));
-        computedDen = this.getDenominator() * frac2.getDenominator();
+        computedNum = ((this.getNumerator() * fraction2.getDenominator()) + (this.getDenominator() * fraction2.getNumerator()));
+        computedDen = this.getDenominator() * fraction2.getDenominator();
 
         return new Fraction(computedNum, computedDen);
     }
@@ -149,12 +149,12 @@ public class Fraction {
     /*
      * Subtraction of Fractions
      */
-    public Fraction subtractFraction(Fraction frac2){
+    public Fraction subtractFraction(Fraction fraction2){
         int computedNum;
         int computedDen;
 
-        computedNum = ((this.getNumerator() * frac2.getDenominator()) - (this.getDenominator() * frac2.getNumerator()));
-        computedDen = this.getDenominator() * frac2.getDenominator();
+        computedNum = ((this.getNumerator() * fraction2.getDenominator()) - (this.getDenominator() * fraction2.getNumerator()));
+        computedDen = this.getDenominator() * fraction2.getDenominator();
 
         return new Fraction(computedNum, computedDen);
     }
@@ -175,28 +175,28 @@ public class Fraction {
     /*
      * Division of Fractions
      */
-    public Fraction divideFraction(Fraction dividend, Fraction divisor){
-        int quotientNumerator;
-        int quotientDenominator;
+    public Fraction divideFraction(Fraction fraction2){
+        int computedNum;
+        int computedDen;
 
-        quotientNumerator = dividend.getNumerator() * divisor.getDenominator();
-        quotientDenominator = dividend.getDenominator() * dividend.getNumerator();
+        computedNum = this.getNumerator() * fraction2.getDenominator();
+        computedDen = this.getDenominator() * fraction2.getNumerator();
 
-        return new Fraction(quotientNumerator, quotientDenominator);
+        return new Fraction(computedNum, computedDen);
     }
 
     /*
      * Reduce a Fraction
      */
-    public Fraction reduceFraction(Fraction fraction){
+    public Fraction reduceFraction(){
         int gcf;
         int reducedNumerator;
         int reducedDenominator;
 
-        gcf = computeGCD(fraction.getNumerator(), fraction.getDenominator());
+        gcf = computeGCD(this.getNumerator(), this.getDenominator());
 
-        reducedNumerator = fraction.getNumerator() / gcf;
-        reducedDenominator = fraction.getDenominator() / gcf;
+        reducedNumerator = this.getNumerator() / gcf;
+        reducedDenominator = this.getDenominator() / gcf;
 
         return new Fraction(reducedNumerator, reducedDenominator);
     }
