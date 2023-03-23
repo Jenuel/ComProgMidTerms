@@ -4,125 +4,201 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+public class Calculator extends JFrame {
+    private JTextField fraction1TF = new JTextField(6);
+    private JTextField fraction2TF = new JTextField(6);
+    private JTextField reduceFractionTF = new JTextField(6);
+    private operationsBoxHandler operationsHandler;
+    private calculateButtonHandler calculateHandler;
+    private clrButtonHandler clrHandler;
+    private toReduceButtonHandler toReduceHandler;
+    private toOperationsButtonHandler toOperationsHandler;
+    static JTextArea operationsTA = new JTextArea();
+    static JTextArea reduceTA = new JTextArea();
 
-public class Calculator implements ActionListener {
+    public static String outStr = "";
+    private JComboBox boxOperator;
+    private JButton calculateBtn1, calculateBtn2;
+    private JButton clrBtn1, clrBtn2;
+    private JButton toReduce;
+    private JButton toOperations;
+    private char selectedOperator;
+    private CardLayout cl = new CardLayout();
+    private JPanel content;
 
-    JFrame frame;
-    JTextField wholeNum1, num1, den1, wholeNum2, num2, den2, rNum, rDen, rWholeNum;
-    JButton[] numberButtons = new JButton[10];
-    JButton[] funcButtons = new JButton[8];
-    JButton addButton, subButton, mulButton, divButton;
-    JButton fracButton, equButton, delButton, clrButton;
-    JPanel panel;
-    int iNum1, iNum2, iDen1, iDen2, iWholeNum1, iWholeNum2;
-    char operator;
-    // JComboBox operator;
+    public Calculator() {
 
-    public Calculator(){
-        frame = new JFrame("Fraction Calculator");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(550,250);
-        frame.setLayout(null);
-        frame.setResizable(false);
+        /**
+         * Create/Initialize Components
+         */
+        // Combo box
+        Character[] operators = {'+', '-', '*', '/'};
+        boxOperator = new JComboBox<>(operators);
+        operationsHandler = new operationsBoxHandler();
+        boxOperator.addActionListener(operationsHandler);
 
-        wholeNum1 = new JTextField();
-        wholeNum1.setBounds(20,100, 50,50);
-        num1 = new JTextField();
-        num1.setBounds(70,70, 50,50);
-        den1 = new JTextField();
-        den1.setBounds(70,120, 50,50);
-        wholeNum2 = new JTextField();
-        wholeNum2.setBounds(200,100, 50,50);
-        num2 = new JTextField();
-        num2.setBounds(250,70, 50,50);
-        den2 = new JTextField();
-        den2.setBounds(250,120, 50,50);
-        rWholeNum = new JTextField();
-        rWholeNum.setBounds(400,100, 50,50);
-        rNum = new JTextField();
-        rNum.setBounds(450,70, 50,50);
-        rDen= new JTextField();
-        rDen.setBounds(450,120, 50,50);
+        // calculate button
+        calculateBtn1 = new JButton("Calculate");
+        calculateHandler = new calculateButtonHandler();
+        calculateBtn1.addActionListener(calculateHandler);
 
+        calculateBtn2 = new JButton("Calculate");
+        calculateHandler = new calculateButtonHandler();
+        calculateBtn2.addActionListener(calculateHandler);
 
-        addButton = new JButton("+");
-        subButton = new JButton("-");
-        mulButton = new JButton("*");
-        divButton = new JButton("/");
-        delButton = new JButton("Delete");
-        equButton = new JButton("=");
-        clrButton = new JButton("Clear");
+        // clear button
+        clrBtn1 = new JButton("Clear");
+        clrHandler = new clrButtonHandler();
+        clrBtn1.addActionListener(clrHandler);
 
-        panel = new JPanel();
-        panel.setBounds(50,100,300,300);
-        panel.setLayout(new GridLayout(4,4,10,10));
+        clrBtn2 = new JButton("Clear");
+        clrHandler = new clrButtonHandler();
+        clrBtn2.addActionListener(clrHandler);
 
-        /*
-        String[] ops = {"+", "-", "*", "/"};
-        operator = new JComboBox(ops);
-        operator.addActionListener(this);
-        operator.setBounds(125, 50, 70, 150);
-        */
+        // text area
+        operationsTA.setEditable(false);
+        reduceTA.setEditable(false);
 
-        funcButtons[0] = addButton;
-        funcButtons[1] = subButton;
-        funcButtons[2] = mulButton;
-        funcButtons[3] = divButton;
-        funcButtons[4] = delButton;
-        funcButtons[5] = equButton;
-        funcButtons[6] = clrButton;
+        // to secondPanel panel button
+        toReduce = new JButton("Switch to reduce fraction calculator");
+        toReduceHandler = new toReduceButtonHandler();
+        toReduce.addActionListener(toReduceHandler);
 
-        for (int x = 0; x < 7; x++){
-            funcButtons[x].addActionListener(this);
-            funcButtons[x].setFocusable(false);
-        }
+        // to operations panel button
+        toOperations = new JButton("Switch to operations calculator");
+        toOperationsHandler = new toOperationsButtonHandler();
+        toOperations.addActionListener(toOperationsHandler);
 
-        addButton.setBounds(0,0, 50, 50);
-        equButton.setBounds(100,0, 50,50);
+        /**
+         * Create content pane and set layout
+         */
+        JPanel firstPanel = new JPanel();
+        firstPanel.setLayout(new BorderLayout());
 
-        frame.add(equButton);
-        frame.add(addButton);
-        frame.add(rNum);
-        frame.add(rWholeNum);
-        frame.add(rDen);
-        frame.add(equButton);
-        frame.add(addButton);
-        frame.add(den2);
-        frame.add(num2);
-        frame.add(wholeNum2);
-        // frame.add(operator);
-        frame.add(num1);
-        frame.add(den1);
-        frame.add(wholeNum1);
-        frame.setVisible(true);
+        JPanel operationsPanel = new JPanel();
+        operationsPanel.setLayout(new FlowLayout());
+
+        JPanel buttonsPanel1 = new JPanel();
+        buttonsPanel1.setLayout(new FlowLayout());
+
+        JPanel buttonsPanel2 = new JPanel();
+        buttonsPanel2.setLayout(new FlowLayout());
+
+        JPanel reducePanel = new JPanel();
+        reducePanel.setLayout(new FlowLayout());
+
+        JPanel secondPanel = new JPanel();
+        secondPanel.setLayout(new BorderLayout());
+
+        content = new JPanel();
+        content.setLayout(cl);
+
+        /**
+         * Add components to the first panel (operations)
+         */
+        operationsPanel.add(new JLabel("Fraction 1: "));
+        operationsPanel.add(fraction1TF);
+        operationsPanel.add(boxOperator);
+        operationsPanel.add(new JLabel("Fraction 2: "));
+        operationsPanel.add(fraction2TF);
+        operationsPanel.add(new JLabel(" = ?"));
+
+        buttonsPanel1.add(clrBtn1);
+        buttonsPanel1.add(calculateBtn1);
+        buttonsPanel1.add(toReduce);
+
+        firstPanel.add(operationsPanel, "North");
+        firstPanel.add(buttonsPanel1, "Center");
+        firstPanel.add(operationsTA, "South");
+
+        /**
+         * Add components to the second panel (reduce fractions)
+         */
+        reducePanel.add(new JLabel("Reduce Fraction: "));
+        reducePanel.add(reduceFractionTF);
+
+        buttonsPanel2.add(clrBtn2);
+        buttonsPanel2.add(calculateBtn2);
+        buttonsPanel2.add(toOperations);
+
+        secondPanel.add(reducePanel, "North");
+        secondPanel.add(buttonsPanel2, "Center");
+        secondPanel.add(reduceTA, "South");
+
+        content.add(firstPanel, "1");
+        content.add(secondPanel, "2");
+        cl.show(content, "1");
+
+        /**
+         * Set window's attributes
+         */
+        setContentPane(content);
+        pack();
+        setTitle("Mixed Fractions Calculator");
+        setSize(550, 200);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
 
     public static void main(String[] args) {
-        Calculator calc = new Calculator();
+        Calculator test = new Calculator();
     }
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        /*
-        if (e.getSource() == operator){
-            System.out.println(operator.getSelectedIndex());
+
+    private class operationsBoxHandler implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            System.out.println(boxOperator.getSelectedIndex());
+            selectedOperator = (char) boxOperator.getSelectedItem();
+        }
+    }
+
+    private class calculateButtonHandler implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+
+            String fraction1Str = fraction1TF.getText();
+            String fraction2Str = fraction2TF.getText();
+
+            MixedFraction mixedFrac1 = new MixedFraction();
+            MixedFraction mixedFrac2 = new MixedFraction();
+
+            switch (selectedOperator){
+                case '+':
+
+                    break;
+                case '-':
+
+                    break;
+                case '*':
+
+                    break;
+                case '/':
+
+                    break;
             }
-         */
-        if (e.getSource() == addButton){
-            operator = '+';
         }
-        if (e.getSource() == equButton){
-            iNum1= Integer.parseInt(num1.getText());
-            iDen1 = Integer.parseInt(den1.getText());
-            Fraction frac1 =  new Fraction(iNum1, iDen1);
-            iNum2= Integer.parseInt(num2.getText());
-            iDen2 = Integer.parseInt(den2.getText());
-            Fraction frac2 =  new Fraction(iNum2, iDen2);
-            Fraction sumFrac = new Fraction();
-            sumFrac = sumFrac.addFraction(frac1, frac2);
-            rNum.setText(String.valueOf(sumFrac.getNumerator()));
-            rDen.setText(String.valueOf(sumFrac.getDenominator()));
-        }
+    }
 
+    private class clrButtonHandler implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            fraction1TF.setText("");
+            fraction2TF.setText("");
+            operationsTA.setText("");
+            reduceFractionTF.setText("");
+            reduceTA.setText("");
+        }
 
     }
+
+    private class toReduceButtonHandler implements ActionListener{
+        public void actionPerformed(ActionEvent e){
+            cl.show(content, "2");
+        }
+    }
+
+    private class toOperationsButtonHandler implements ActionListener{
+        public void actionPerformed(ActionEvent e){
+            cl.show(content, "1");
+        }
+    }
+
 }
