@@ -8,20 +8,10 @@ public class Calculator extends JFrame {
     private JTextField fraction1TF = new JTextField(6);
     private JTextField fraction2TF = new JTextField(6);
     private JTextField reduceFractionTF = new JTextField(6);
-    private operationsBoxHandler operationsHandler;
-    private calculateButtonHandler calculateHandler;
-    private clrButtonHandler clrHandler;
-    private toReduceButtonHandler toReduceHandler;
-    private toOperationsButtonHandler toOperationsHandler;
     static JTextArea operationsTA = new JTextArea();
     static JTextArea reduceTA = new JTextArea();
-
     public static String outStr = "";
     private JComboBox boxOperator;
-    private JButton calculateBtn1, calculateBtn2;
-    private JButton clrBtn1, clrBtn2;
-    private JButton toReduce;
-    private JButton toOperations;
     private char selectedOperator;
     private CardLayout cl = new CardLayout();
     private JPanel content;
@@ -34,24 +24,24 @@ public class Calculator extends JFrame {
         // Combo box
         Character[] operators = {'+', '-', '*', '/'};
         boxOperator = new JComboBox<>(operators);
-        operationsHandler = new operationsBoxHandler();
+        operationsBoxHandler operationsHandler = new operationsBoxHandler();
         boxOperator.addActionListener(operationsHandler);
 
         // calculate button
-        calculateBtn1 = new JButton("Calculate");
-        calculateHandler = new calculateButtonHandler();
+        JButton calculateBtn1 = new JButton("Calculate");
+        calculateButtonHandler calculateHandler = new calculateButtonHandler();
         calculateBtn1.addActionListener(calculateHandler);
 
-        calculateBtn2 = new JButton("Calculate");
+        JButton calculateBtn2 = new JButton("Calculate");
         calculateHandler = new calculateButtonHandler();
         calculateBtn2.addActionListener(calculateHandler);
 
         // clear button
-        clrBtn1 = new JButton("Clear");
-        clrHandler = new clrButtonHandler();
+        JButton clrBtn1 = new JButton("Clear");
+        clrButtonHandler clrHandler = new clrButtonHandler();
         clrBtn1.addActionListener(clrHandler);
 
-        clrBtn2 = new JButton("Clear");
+        JButton clrBtn2 = new JButton("Clear");
         clrHandler = new clrButtonHandler();
         clrBtn2.addActionListener(clrHandler);
 
@@ -60,13 +50,13 @@ public class Calculator extends JFrame {
         reduceTA.setEditable(false);
 
         // to secondPanel panel button
-        toReduce = new JButton("Switch to reduce fraction calculator");
-        toReduceHandler = new toReduceButtonHandler();
+        JButton toReduce = new JButton("Switch to reduce fraction calculator");
+        toReduceButtonHandler toReduceHandler = new toReduceButtonHandler();
         toReduce.addActionListener(toReduceHandler);
 
         // to operations panel button
-        toOperations = new JButton("Switch to operations calculator");
-        toOperationsHandler = new toOperationsButtonHandler();
+        JButton toOperations = new JButton("Switch to operations calculator");
+        toOperationsButtonHandler toOperationsHandler = new toOperationsButtonHandler();
         toOperations.addActionListener(toOperationsHandler);
 
         /**
@@ -128,41 +118,6 @@ public class Calculator extends JFrame {
         content.add(firstPanel, "1");
         content.add(secondPanel, "2");
         cl.show(content, "1");
-
-        content = new JPanel();
-        content.setLayout(cl);
-
-        /**
-         * Add components to the first panel (operations)
-         */
-        operationsPanel.add(new JLabel("Fraction 1: "));
-        operationsPanel.add(fraction1TF);
-        operationsPanel.add(boxOperator);
-        operationsPanel.add(new JLabel("Fraction 2: "));
-        operationsPanel.add(fraction2TF);
-        operationsPanel.add(new JLabel(" = ?"));
-
-        buttonsPanel1.add(clrBtn1);
-        buttonsPanel1.add(calculateBtn1);
-        buttonsPanel1.add(toReduce);
-
-        firstPanel.add(operationsPanel, "North");
-        firstPanel.add(buttonsPanel1, "Center");
-        firstPanel.add(operationsTA, "South");
-
-        /**
-         * Add components to the second panel (reduce fractions)
-         */
-        reducePanel.add(new JLabel("Reduce Fraction: "));
-        reducePanel.add(reduceFractionTF);
-
-        buttonsPanel2.add(clrBtn2);
-        buttonsPanel2.add(calculateBtn2);
-        buttonsPanel2.add(toOperations);
-
-        secondPanel.add(reducePanel, "North");
-        secondPanel.add(buttonsPanel2, "Center");
-        secondPanel.add(reduceTA, "South");
 
         content.add(firstPanel, "1");
         content.add(secondPanel, "2");
