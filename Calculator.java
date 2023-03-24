@@ -129,12 +129,6 @@ public class Calculator extends JFrame {
         content.add(secondPanel, "2");
         cl.show(content, "1");
 
-        JPanel reducePanel = new JPanel();
-        reducePanel.setLayout(new FlowLayout());
-
-        JPanel secondPanel = new JPanel();
-        secondPanel.setLayout(new BorderLayout());
-
         content = new JPanel();
         content.setLayout(cl);
 
