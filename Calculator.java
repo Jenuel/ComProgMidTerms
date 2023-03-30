@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 public class Calculator extends JFrame {
     private JTextField fraction1TF = new JTextField(6);
     private JTextField fraction2TF = new JTextField(6);
@@ -137,6 +138,15 @@ public class Calculator extends JFrame {
 
     public static void main(String[] args) {
         Calculator test = new Calculator();
+
+        String trialString = "1";
+        String trialString2 = "1/2";
+        String trialString3 = "3 1/2";
+
+        System.out.println(parseFraction(trialString));
+        System.out.println(parseFraction(trialString2));
+        System.out.println(parseFraction(trialString3));
+        System.out.println(parseFraction(trialString3).getWholeNumber());
     }
 
     private class operationsBoxHandler implements ActionListener {
@@ -192,6 +202,33 @@ public class Calculator extends JFrame {
         public void actionPerformed(ActionEvent e){
             cl.show(content, "1");
         }
+    }
+
+    public static MixedFraction parseFraction (String fraction) {
+        String[] input = fraction.split("[ /]");
+        MixedFraction inputMixedFraction = new MixedFraction();
+
+        switch(input.length) {
+            case 1:
+                int wholeNumber = Integer.parseInt(input[0]);
+                inputMixedFraction = new MixedFraction(0, 1, wholeNumber);
+                return inputMixedFraction;
+
+
+            case 2:
+                int numerator = Integer.parseInt(input[0]);
+                int denominator = Integer.parseInt(input[1]);
+                inputMixedFraction = new MixedFraction(new Fraction(numerator, denominator));
+                return inputMixedFraction;
+
+
+            case 3:
+                inputMixedFraction = new MixedFraction(Integer.parseInt(input[0]), Integer.parseInt(input[1]), Integer.parseInt(input[2]));
+                return inputMixedFraction;
+
+        }
+        return inputMixedFraction;
+
     }
 
 }

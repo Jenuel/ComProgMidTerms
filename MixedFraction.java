@@ -84,6 +84,8 @@ public class MixedFraction extends Fraction {
     public String toString() {
         if (wholeNumber == 0)
             return " " + super.toString();
+        if ((double) this.getNumerator()/this.getDenominator() == 0)
+            return this.wholeNumber + "";
         else
             return this.wholeNumber + " " + super.toString();
     } // end of toString method
