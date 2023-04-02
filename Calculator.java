@@ -1,4 +1,4 @@
-package prog2.prelimgroup;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -134,24 +134,16 @@ public class Calculator extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
+
     }
 
     public static void main(String[] args) {
         Calculator test = new Calculator();
 
-        String trialString = "1";
-        String trialString2 = "1/2";
-        String trialString3 = "3 1/2";
-
-        System.out.println(parseFraction(trialString));
-        System.out.println(parseFraction(trialString2));
-        System.out.println(parseFraction(trialString3));
-        System.out.println(parseFraction(trialString3).getWholeNumber());
     }
 
     private class operationsBoxHandler implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            System.out.println(boxOperator.getSelectedIndex());
             selectedOperator = (char) boxOperator.getSelectedItem();
         }
     }
@@ -165,17 +157,26 @@ public class Calculator extends JFrame {
             MixedFraction mixedFrac1 = new MixedFraction();
             MixedFraction mixedFrac2 = new MixedFraction();
 
-            switch (selectedOperator){
-                case '+':
+            mixedFrac1 = parseFraction(fraction1Str);
+            mixedFrac2 = parseFraction(fraction2Str);
 
-                    break;
+
+            switch (selectedOperator) {
                 case '-':
-
+                    MixedFraction answer = mixedFrac1.subtract(mixedFrac2);
+                    System.out.println(answer);
                     break;
                 case '*':
-
+                    MixedFraction answer2 = mixedFrac1.multiply(mixedFrac2);
+                    System.out.println(answer2);
                     break;
                 case '/':
+                    MixedFraction answer3 = mixedFrac1.divide(mixedFrac2);
+                    System.out.println(answer3);
+                    break;
+                default:
+                    MixedFraction answer1 = mixedFrac1.add(mixedFrac2);
+                    System.out.println(answer1);
                     break;
             }
         }
@@ -192,43 +193,39 @@ public class Calculator extends JFrame {
 
     }
 
-    private class toReduceButtonHandler implements ActionListener{
-        public void actionPerformed(ActionEvent e){
+    private class toReduceButtonHandler implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
             cl.show(content, "2");
         }
     }
 
-    private class toOperationsButtonHandler implements ActionListener{
-        public void actionPerformed(ActionEvent e){
+    private class toOperationsButtonHandler implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
             cl.show(content, "1");
         }
     }
 
-    public static MixedFraction parseFraction (String fraction) {
+    public static MixedFraction parseFraction(String fraction) {
         String[] input = fraction.split("[ /]");
         MixedFraction inputMixedFraction = new MixedFraction();
 
-        switch(input.length) {
-            case 1:
+        switch (input.length) {
+            case 1: //e.g "1"
                 int wholeNumber = Integer.parseInt(input[0]);
                 inputMixedFraction = new MixedFraction(0, 1, wholeNumber);
                 return inputMixedFraction;
 
-
-            case 2:
+            case 2: // e.g "1/2"
                 int numerator = Integer.parseInt(input[0]);
                 int denominator = Integer.parseInt(input[1]);
                 inputMixedFraction = new MixedFraction(new Fraction(numerator, denominator));
                 return inputMixedFraction;
 
-
-            case 3:
-                inputMixedFraction = new MixedFraction(Integer.parseInt(input[0]), Integer.parseInt(input[1]), Integer.parseInt(input[2]));
+            case 3: //e.g "1 2/3"
+                inputMixedFraction = new MixedFraction(Integer.parseInt(input[1]), Integer.parseInt(input[2]), Integer.parseInt(input[0]));
                 return inputMixedFraction;
 
         }
         return inputMixedFraction;
-
-    }
-
-}
+    }//end of parseFraction method
+}//end of Calculator class
