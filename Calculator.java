@@ -1,4 +1,4 @@
-
+package prog2.prelimgroup;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,74 +9,40 @@ public class Calculator extends JFrame {
     private JTextField fraction1TF = new JTextField(6);
     private JTextField fraction2TF = new JTextField(6);
     private JTextField reduceFractionTF = new JTextField(6);
-    static JTextArea operationsTA = new JTextArea();
-    static JTextArea reduceTA = new JTextArea();
+    static JTextArea operationsTA = new JTextArea(6,6);
+    static JTextArea reduceTA = new JTextArea(6,6);
     public static String outStr = "";
     private JComboBox boxOperator;
     private char selectedOperator;
-    private CardLayout cl = new CardLayout();
     private JPanel content;
+    private ButtonsHandler btnHandler = new ButtonsHandler();
+    private JButton calculateBtn, clrButton, toOperations, toReduce, calculateBtn2, clrButton2;
+    private CardLayout cl = new CardLayout();
 
     public Calculator() {
 
         /**
-         * Create/Initialize Components
+         * Create content pane and set layout
          */
-        // Combo box
-        Character[] operators = {'+', '-', '*', '/'};
-        boxOperator = new JComboBox<>(operators);
-        operationsBoxHandler operationsHandler = new operationsBoxHandler();
-        boxOperator.addActionListener(operationsHandler);
-
-        // calculate button
-        JButton calculateBtn1 = new JButton("Calculate");
-        calculateButtonHandler calculateHandler = new calculateButtonHandler();
-        calculateBtn1.addActionListener(calculateHandler);
-
-        JButton calculateBtn2 = new JButton("Calculate");
-        calculateHandler = new calculateButtonHandler();
-        calculateBtn2.addActionListener(calculateHandler);
-
-        // clear button
-        JButton clrBtn1 = new JButton("Clear");
-        clrButtonHandler clrHandler = new clrButtonHandler();
-        clrBtn1.addActionListener(clrHandler);
-
-        JButton clrBtn2 = new JButton("Clear");
-        clrHandler = new clrButtonHandler();
-        clrBtn2.addActionListener(clrHandler);
 
         // text area
         operationsTA.setEditable(false);
         reduceTA.setEditable(false);
 
-        // to secondPanel panel button
-        JButton toReduce = new JButton("Switch to reduce fraction calculator");
-        toReduceButtonHandler toReduceHandler = new toReduceButtonHandler();
-        toReduce.addActionListener(toReduceHandler);
-
-        // to operations panel button
-        JButton toOperations = new JButton("Switch to operations calculator");
-        toOperationsButtonHandler toOperationsHandler = new toOperationsButtonHandler();
-        toOperations.addActionListener(toOperationsHandler);
-
-        /**
-         * Create content pane and set layout
-         */
-        JPanel firstPanel = new JPanel();
-        firstPanel.setLayout(new BorderLayout());
-
         JPanel operationsPanel = new JPanel();
-        operationsPanel.setLayout(new FlowLayout());
+        setOperationPanel(operationsPanel);
 
         JPanel buttonsPanel1 = new JPanel();
-        buttonsPanel1.setLayout(new FlowLayout());
+        setButtonPanel(buttonsPanel1);
 
         JPanel buttonsPanel2 = new JPanel();
-        buttonsPanel2.setLayout(new FlowLayout());
+        setButtonPanel2(buttonsPanel2);
 
         JPanel reducePanel = new JPanel();
-        reducePanel.setLayout(new FlowLayout());
+        setReducePanel(reducePanel);
+
+        JPanel firstPanel = new JPanel();
+        firstPanel.setLayout(new BorderLayout());
 
         JPanel secondPanel = new JPanel();
         secondPanel.setLayout(new BorderLayout());
@@ -87,17 +53,6 @@ public class Calculator extends JFrame {
         /**
          * Add components to the first panel (operations)
          */
-        operationsPanel.add(new JLabel("Fraction 1: "));
-        operationsPanel.add(fraction1TF);
-        operationsPanel.add(boxOperator);
-        operationsPanel.add(new JLabel("Fraction 2: "));
-        operationsPanel.add(fraction2TF);
-        operationsPanel.add(new JLabel(" = ?"));
-
-        buttonsPanel1.add(clrBtn1);
-        buttonsPanel1.add(calculateBtn1);
-        buttonsPanel1.add(toReduce);
-
         firstPanel.add(operationsPanel, "North");
         firstPanel.add(buttonsPanel1, "Center");
         firstPanel.add(operationsTA, "South");
@@ -105,20 +60,9 @@ public class Calculator extends JFrame {
         /**
          * Add components to the second panel (reduce fractions)
          */
-        reducePanel.add(new JLabel("Reduce Fraction: "));
-        reducePanel.add(reduceFractionTF);
-
-        buttonsPanel2.add(clrBtn2);
-        buttonsPanel2.add(calculateBtn2);
-        buttonsPanel2.add(toOperations);
-
         secondPanel.add(reducePanel, "North");
         secondPanel.add(buttonsPanel2, "Center");
         secondPanel.add(reduceTA, "South");
-
-        content.add(firstPanel, "1");
-        content.add(secondPanel, "2");
-        cl.show(content, "1");
 
         content.add(firstPanel, "1");
         content.add(secondPanel, "2");
@@ -131,6 +75,7 @@ public class Calculator extends JFrame {
         pack();
         setTitle("Mixed Fractions Calculator");
         setSize(550, 200);
+        setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
@@ -139,73 +84,156 @@ public class Calculator extends JFrame {
 
     public static void main(String[] args) {
         Calculator test = new Calculator();
+    }
+
+    /**
+     * Set operation panel which includes the text fields for fraction 1 and 2, combo box for operations and labels
+     */
+    public void setOperationPanel(JPanel panel){
+
+        // Combo box
+        Character[] operators = {'+', '-', '*', '/'};
+        boxOperator = new JComboBox<>(operators);
+        boxOperator.addActionListener(btnHandler);
+
+        panel.add(new JLabel("Fraction 1: "));
+        panel.add(fraction1TF);
+        panel.add(boxOperator);
+        panel.add(new JLabel("Fraction 2: "));
+        panel.add(fraction2TF);
+        panel.add(new JLabel(" = ?"));
 
     }
 
-    private class operationsBoxHandler implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            selectedOperator = (char) boxOperator.getSelectedItem();
-        }
+    /**
+     * Set button panel for the first panel which includes a calculate button, clear button, and toReduce button
+     * to switch to the second panel
+     */
+    public void setButtonPanel(JPanel panel){
+
+        // calculate button
+        calculateBtn = new JButton("Calculate");
+        calculateBtn.addActionListener(btnHandler);
+
+        // clear button
+        clrButton = new JButton("Clear");
+        clrButton.addActionListener(btnHandler);
+
+        // to reduce fraction panel button
+        toReduce = new JButton("Reduce fraction");
+        toReduce.addActionListener(btnHandler);
+
+        panel.add(calculateBtn);
+        panel.add(clrButton);
+        panel.add(toReduce);
     }
 
-    private class calculateButtonHandler implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
+    /**
+     * Set reduce panel which includes a JLabel, and reduce fraction text field
+     */
+    public void setReducePanel (JPanel panel){
+        panel.add(new JLabel("Reduce Fraction: "));
+        panel.add(reduceFractionTF);
+    }
 
-            String fraction1Str = fraction1TF.getText();
-            String fraction2Str = fraction2TF.getText();
+    /**
+     * Set button panel for the second panel which include a calculate button, clear button, and toOperations
+     * button to switch to the first panel
+     */
+    public void setButtonPanel2(JPanel panel){
+        // calculate button
+        calculateBtn2 = new JButton("Calculate");
+        calculateBtn2.addActionListener(btnHandler);
 
-            MixedFraction mixedFrac1 = new MixedFraction();
-            MixedFraction mixedFrac2 = new MixedFraction();
 
-            mixedFrac1 = parseFraction(fraction1Str);
-            mixedFrac2 = parseFraction(fraction2Str);
+        // clear button
+        clrButton2 = new JButton("Clear");
+        clrButton2.addActionListener(btnHandler);
 
+        // to operations panel button
+        toOperations = new JButton("Perform operations");
+        toOperations.addActionListener(btnHandler);
 
-            switch (selectedOperator) {
-                case '-':
-                    MixedFraction answer = mixedFrac1.subtract(mixedFrac2);
-                    System.out.println(answer);
-                    break;
-                case '*':
-                    MixedFraction answer2 = mixedFrac1.multiply(mixedFrac2);
-                    System.out.println(answer2);
-                    break;
-                case '/':
-                    MixedFraction answer3 = mixedFrac1.divide(mixedFrac2);
-                    System.out.println(answer3);
-                    break;
-                default:
-                    MixedFraction answer1 = mixedFrac1.add(mixedFrac2);
-                    System.out.println(answer1);
-                    break;
+        panel.add(calculateBtn2);
+        panel.add(clrButton2);
+        panel.add(toOperations);
+    }
+
+    /**
+     * ButtonsHandler class
+     */
+    private class ButtonsHandler implements ActionListener{
+        public void actionPerformed(ActionEvent e){
+            if (e.getSource() == boxOperator){
+                selectedOperator = (char) boxOperator.getSelectedItem();
+            }
+
+            if (e.getSource() == calculateBtn){
+                String fraction1Str = fraction1TF.getText();
+                String fraction2Str = fraction2TF.getText();
+
+                MixedFraction mixedFrac1 = new MixedFraction();
+                MixedFraction mixedFrac2 = new MixedFraction();
+
+                mixedFrac1 = parseFraction(fraction1Str);
+                mixedFrac2 = parseFraction(fraction2Str);
+
+                switch (selectedOperator) {
+                    case '-':
+                        MixedFraction answer = mixedFrac1.subtract(mixedFrac2);
+                        System.out.println(answer);
+                        break;
+                    case '*':
+                        MixedFraction answer2 = mixedFrac1.multiply(mixedFrac2);
+                        System.out.println(answer2);
+                        break;
+                    case '/':
+                        MixedFraction answer3 = mixedFrac1.divide(mixedFrac2);
+                        System.out.println(answer3);
+                        break;
+                    default:
+                        MixedFraction answer1 = mixedFrac1.add(mixedFrac2);
+                        System.out.println(answer1);
+                        break;
+                }
+            }
+
+            if (e.getSource() == calculateBtn2){
+                String fraction3Str = reduceFractionTF.getText();
+
+                MixedFraction mixedFrac3 = new MixedFraction();
+
+                mixedFrac3 = parseFraction(fraction3Str);
+
+                Fraction fraction3  = mixedFrac3.mixedToImproper();
+                fraction3 = fraction3.reduceFraction();
+
+                MixedFraction answer4 = fraction3.improperToMixed();
+                System.out.println(answer4);
+            }
+
+            if (e.getSource() == clrButton || e.getSource() == clrButton2){
+                fraction1TF.setText("");
+                fraction2TF.setText("");
+                operationsTA.setText("");
+                reduceFractionTF.setText("");
+                reduceTA.setText("");
+            }
+
+            if (e.getSource() == toReduce){
+                cl.show(content, "2");
+            }
+
+            if (e.getSource() == toOperations){
+                cl.show(content, "1");
             }
         }
     }
 
-    private class clrButtonHandler implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            fraction1TF.setText("");
-            fraction2TF.setText("");
-            operationsTA.setText("");
-            reduceFractionTF.setText("");
-            reduceTA.setText("");
-        }
-
-    }
-
-    private class toReduceButtonHandler implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            cl.show(content, "2");
-        }
-    }
-
-    private class toOperationsButtonHandler implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            cl.show(content, "1");
-        }
-    }
-
-    public static MixedFraction parseFraction(String fraction) {
+    /**
+     * parseFraction method to read the input
+     */
+    public MixedFraction parseFraction(String fraction) {
         String[] input = fraction.split("[ /]");
         MixedFraction inputMixedFraction = new MixedFraction();
 
@@ -218,13 +246,13 @@ public class Calculator extends JFrame {
             case 2: // e.g "1/2"
                 int numerator = Integer.parseInt(input[0]);
                 int denominator = Integer.parseInt(input[1]);
-                inputMixedFraction = new MixedFraction(new Fraction(numerator, denominator));
+                Fraction inputFraction = new Fraction(numerator, denominator);
+                inputMixedFraction = inputFraction.improperToMixed();
                 return inputMixedFraction;
 
             case 3: //e.g "1 2/3"
                 inputMixedFraction = new MixedFraction(Integer.parseInt(input[1]), Integer.parseInt(input[2]), Integer.parseInt(input[0]));
                 return inputMixedFraction;
-
         }
         return inputMixedFraction;
     }//end of parseFraction method
