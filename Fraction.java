@@ -5,11 +5,10 @@
  * Cagulada, Sheryn Ann
  * Lumanglas, Yenzy Hynna
  * Palacay, Abigail
- *
  * Class Code and Schedule: 9315 CS122 MTh 9:00 - 10:30
  */
 
-package midterms;
+package prog2.prelimgroup;
 
 public class Fraction {
 
@@ -36,8 +35,8 @@ public class Fraction {
     } // end of Fraction method
 
     /**
-    * Create a Fraction method where denominator is 1 and the numerator is whole number value
-    */
+     * Create a Fraction method where denominator is 1 and the numerator is whole number value
+     */
     public Fraction(int wholeNumVal){
         numerator = wholeNumVal;
         denominator = 1;
@@ -152,14 +151,11 @@ public class Fraction {
      * Create a method to Reduce a Fraction
      */
     public Fraction reduceFraction(){
-        int gcf;
         int reducedNumerator;
         int reducedDenominator;
 
-        gcf = computeGCD(this.getNumerator(), this.getDenominator());
-
-        reducedNumerator = this.getNumerator() / gcf;
-        reducedDenominator = this.getDenominator() / gcf;
+        reducedNumerator = this.getNumerator() / computeGCD(this.getNumerator(),this.getDenominator());
+        reducedDenominator = this.getDenominator() / computeGCD(this.getNumerator(), this.getDenominator());
 
         return new Fraction(reducedNumerator, reducedDenominator);
     } // end of reduceFraction method
@@ -170,7 +166,10 @@ public class Fraction {
     public MixedFraction improperToMixed() {
         if (numerator % denominator == 0)
             return new MixedFraction(this.numerator, this.getDenominator(), 0);
-        else
+        else if (this.getNumerator()/this.getDenominator() < 0 && this.getDenominator() < 0) {
+            return new MixedFraction(Math.abs(this.getNumerator() % this.getDenominator()), Math.abs(this.getDenominator()),
+            this.getNumerator()/this.getDenominator());
+        } else
             return new MixedFraction(Math.abs(this.getNumerator() % this.getDenominator()), this.getDenominator(),
                     this.getNumerator() / this.getDenominator());
     } // end of improperToMixed method

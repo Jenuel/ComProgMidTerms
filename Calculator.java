@@ -6,28 +6,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Calculator extends JFrame {
-    private JTextField fraction1TF = new JTextField(6);
-    private JTextField fraction2TF = new JTextField(6);
-    private JTextField reduceFractionTF = new JTextField(6);
-    static JTextArea operationsTA = new JTextArea(6,6);
-    static JTextArea reduceTA = new JTextArea(6,6);
-    public static String outStr = "";
-    private JComboBox boxOperator;
+    private final JTextField fraction1TF = new JTextField(6);
+    private final JTextField fraction2TF = new JTextField(6);
+    private final JTextField reduceFractionTF = new JTextField(6);
+    private final JTextField operationsTF = new JTextField(6);
+    private final JTextField reduceTF = new JTextField( 6);
+    private String problemDisplayer = "";
+    private JComboBox<Character> boxOperator;
     private char selectedOperator;
-    private JPanel content;
-    private ButtonsHandler btnHandler = new ButtonsHandler();
+    private final Container content;
+    private final ButtonsHandler btnHandler = new ButtonsHandler();
     private JButton calculateBtn, clrButton, toOperations, toReduce, calculateBtn2, clrButton2;
-    private CardLayout cl = new CardLayout();
+    private final CardLayout cl = new CardLayout();
 
     public Calculator() {
 
-        /**
-         * Create content pane and set layout
-         */
+        operationsTF.setEditable(false);
+        operationsTF.setHorizontalAlignment(SwingConstants.CENTER);
 
-        // text area
-        operationsTA.setEditable(false);
-        reduceTA.setEditable(false);
+        reduceTF.setEditable(false);
+        reduceTF.setHorizontalAlignment(SwingConstants.CENTER);
 
         JPanel operationsPanel = new JPanel();
         setOperationPanel(operationsPanel);
@@ -47,34 +45,33 @@ public class Calculator extends JFrame {
         JPanel secondPanel = new JPanel();
         secondPanel.setLayout(new BorderLayout());
 
-        content = new JPanel();
+        content = getContentPane();
         content.setLayout(cl);
 
-        /**
-         * Add components to the first panel (operations)
+        /*
+          Add components to the first panel (operations)
          */
         firstPanel.add(operationsPanel, "North");
         firstPanel.add(buttonsPanel1, "Center");
-        firstPanel.add(operationsTA, "South");
+        firstPanel.add(operationsTF, "South");
 
-        /**
+        /*
          * Add components to the second panel (reduce fractions)
          */
         secondPanel.add(reducePanel, "North");
         secondPanel.add(buttonsPanel2, "Center");
-        secondPanel.add(reduceTA, "South");
+        secondPanel.add(reduceTF, "South");
 
         content.add(firstPanel, "1");
         content.add(secondPanel, "2");
         cl.show(content, "1");
 
-        /**
+        /*
          * Set window's attributes
          */
         setContentPane(content);
         pack();
         setTitle("Mixed Fractions Calculator");
-        setSize(550, 200);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -83,17 +80,23 @@ public class Calculator extends JFrame {
     }
 
     public static void main(String[] args) {
-        Calculator test = new Calculator();
+        Calculator test;
+        try {
+            test = new Calculator();
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     /**
      * Set operation panel which includes the text fields for fraction 1 and 2, combo box for operations and labels
      */
-    public void setOperationPanel(JPanel panel){
+    private void setOperationPanel(JPanel panel) {
 
         // Combo box
         Character[] operators = {'+', '-', '*', '/'};
         boxOperator = new JComboBox<>(operators);
+        boxOperator.setSelectedItem('+');
         boxOperator.addActionListener(btnHandler);
 
         panel.add(new JLabel("Fraction 1: "));
@@ -109,7 +112,7 @@ public class Calculator extends JFrame {
      * Set button panel for the first panel which includes a calculate button, clear button, and toReduce button
      * to switch to the second panel
      */
-    public void setButtonPanel(JPanel panel){
+    private void setButtonPanel(JPanel panel) {
 
         // calculate button
         calculateBtn = new JButton("Calculate");
@@ -131,7 +134,7 @@ public class Calculator extends JFrame {
     /**
      * Set reduce panel which includes a JLabel, and reduce fraction text field
      */
-    public void setReducePanel (JPanel panel){
+    private void setReducePanel(JPanel panel) {
         panel.add(new JLabel("Reduce Fraction: "));
         panel.add(reduceFractionTF);
     }
@@ -140,7 +143,7 @@ public class Calculator extends JFrame {
      * Set button panel for the second panel which include a calculate button, clear button, and toOperations
      * button to switch to the first panel
      */
-    public void setButtonPanel2(JPanel panel){
+    private void setButtonPanel2(JPanel panel) {
         // calculate button
         calculateBtn2 = new JButton("Calculate");
         calculateBtn2.addActionListener(btnHandler);
@@ -162,98 +165,170 @@ public class Calculator extends JFrame {
     /**
      * ButtonsHandler class
      */
-    private class ButtonsHandler implements ActionListener{
-        public void actionPerformed(ActionEvent e){
-            if (e.getSource() == boxOperator){
+    private class ButtonsHandler implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == boxOperator) {
                 selectedOperator = (char) boxOperator.getSelectedItem();
             }
 
-            if (e.getSource() == calculateBtn){
-                String fraction1Str = fraction1TF.getText();
-                String fraction2Str = fraction2TF.getText();
-
+            if (e.getSource() == calculateBtn) {
                 MixedFraction mixedFrac1 = new MixedFraction();
                 MixedFraction mixedFrac2 = new MixedFraction();
 
-                mixedFrac1 = parseFraction(fraction1Str);
-                mixedFrac2 = parseFraction(fraction2Str);
+                String fraction1Str = fraction1TF.getText();
+                String fraction2Str = fraction2TF.getText();
 
-                switch (selectedOperator) {
-                    case '-':
-                        MixedFraction answer = mixedFrac1.subtract(mixedFrac2);
-                        System.out.println(answer);
-                        break;
-                    case '*':
-                        MixedFraction answer2 = mixedFrac1.multiply(mixedFrac2);
-                        System.out.println(answer2);
-                        break;
-                    case '/':
-                        MixedFraction answer3 = mixedFrac1.divide(mixedFrac2);
-                        System.out.println(answer3);
-                        break;
-                    default:
-                        MixedFraction answer1 = mixedFrac1.add(mixedFrac2);
-                        System.out.println(answer1);
-                        break;
+                if (fraction1Str.equals("") || fraction2Str.equals(""))
+                    problemDisplayer = "Incomplete inputs";
+                else {
+                    mixedFrac1 = parseFraction(fraction1Str);
+                    mixedFrac2 = parseFraction(fraction2Str);
+                }
+
+                if (problemDisplayer.equals("")) {
+                    switch (selectedOperator) {
+                        case '-' -> {
+                            MixedFraction answer = mixedFrac1.subtract(mixedFrac2);
+                            operationsTF.setText(answer + " or " + answer.toDouble());
+                        }
+                        case '*' -> {
+                            MixedFraction answer2 = mixedFrac1.multiply(mixedFrac2);
+                            operationsTF.setText(answer2 + " or " + answer2.toDouble());
+                        }
+                        case '/' -> {
+                            MixedFraction answer3;
+                            try {
+                                answer3 = mixedFrac1.divide(mixedFrac2);
+                                operationsTF.setText(answer3 + " or " + answer3.toDouble());
+                            } catch (ArithmeticException ex1){
+                                problemDisplayer = "Divisor cannot be 0";
+                            }
+
+                            if (operationsTF.getText().equals("")){
+                                operationsTF.setText("Divisor cannot be 0");
+                                fraction1TF.setText("");
+                                fraction2TF.setText("");
+                                problemDisplayer = "";
+                            }
+                        }
+                        default -> {
+                            MixedFraction answer1 = mixedFrac1.add(mixedFrac2);
+                            operationsTF.setText(answer1 + " or " + answer1.toDouble());
+                        }
+                    }
+                } else {
+                    operationsTF.setText(problemDisplayer);
+                    fraction1TF.setText("");
+                    fraction2TF.setText("");
+                    problemDisplayer = "";
                 }
             }
 
-            if (e.getSource() == calculateBtn2){
-                String fraction3Str = reduceFractionTF.getText();
-
+            if (e.getSource() == calculateBtn2) {
                 MixedFraction mixedFrac3 = new MixedFraction();
 
-                mixedFrac3 = parseFraction(fraction3Str);
+                String fraction3Str = reduceFractionTF.getText();
 
-                Fraction fraction3  = mixedFrac3.mixedToImproper();
-                fraction3 = fraction3.reduceFraction();
+                if (fraction3Str.equals(""))
+                    problemDisplayer = "Incomplete input";
+                else {
+                    mixedFrac3 = parseFraction(fraction3Str);
+                }
 
-                MixedFraction answer4 = fraction3.improperToMixed();
-                System.out.println(answer4);
+                if (problemDisplayer.equals("")) {
+                    Fraction fraction3 = mixedFrac3.mixedToImproper();
+                    fraction3 = fraction3.reduceFraction();
+                    MixedFraction answer4 = fraction3.improperToMixed();
+                    reduceTF.setText(answer4 + " or " + answer4.toDouble());
+                } else {
+                    reduceTF.setText(problemDisplayer);
+                    reduceFractionTF.setText("");
+                    problemDisplayer = "";
+                }
             }
 
-            if (e.getSource() == clrButton || e.getSource() == clrButton2){
+            if (e.getSource() == clrButton || e.getSource() == clrButton2) {
                 fraction1TF.setText("");
                 fraction2TF.setText("");
-                operationsTA.setText("");
+                operationsTF.setText("");
                 reduceFractionTF.setText("");
-                reduceTA.setText("");
+                reduceTF.setText("");
             }
 
-            if (e.getSource() == toReduce){
+            if (e.getSource() == toReduce) {
                 cl.show(content, "2");
             }
 
-            if (e.getSource() == toOperations){
+            if (e.getSource() == toOperations) {
                 cl.show(content, "1");
             }
         }
-    }
 
-    /**
-     * parseFraction method to read the input
-     */
-    public MixedFraction parseFraction(String fraction) {
-        String[] input = fraction.split("[ /]");
-        MixedFraction inputMixedFraction = new MixedFraction();
 
-        switch (input.length) {
-            case 1: //e.g "1"
-                int wholeNumber = Integer.parseInt(input[0]);
-                inputMixedFraction = new MixedFraction(0, 1, wholeNumber);
-                return inputMixedFraction;
+        /**
+         * parseFraction method to read the input
+         */
+        private MixedFraction parseFraction(String fraction) {
 
-            case 2: // e.g "1/2"
-                int numerator = Integer.parseInt(input[0]);
-                int denominator = Integer.parseInt(input[1]);
-                Fraction inputFraction = new Fraction(numerator, denominator);
-                inputMixedFraction = inputFraction.improperToMixed();
-                return inputMixedFraction;
+            String[] input = fraction.split("[ /]", 3);
 
-            case 3: //e.g "1 2/3"
-                inputMixedFraction = new MixedFraction(Integer.parseInt(input[1]), Integer.parseInt(input[2]), Integer.parseInt(input[0]));
-                return inputMixedFraction;
-        }
-        return inputMixedFraction;
-    }//end of parseFraction method
-}//end of Calculator class
+            MixedFraction inputMixedFraction = new MixedFraction();
+
+            int wholeNumber = 0;
+            int numerator = 0;
+            int denominator = 1;
+
+            switch (input.length) {
+                case 1 -> { //e.g "1"
+
+                    try {
+                        wholeNumber = Integer.parseInt(input[0]);
+                    } catch (NumberFormatException nfe1) {
+                        problemDisplayer = "Make sure to enter a valid number.";
+                    }
+
+                    inputMixedFraction = new MixedFraction(0, 1, wholeNumber);
+                    return inputMixedFraction;
+                }
+                case 2 -> { // e.g "1/2"
+
+                    try {
+                        numerator = Integer.parseInt(input[0]);
+                        denominator = Integer.parseInt(input[1]);
+                    } catch (NumberFormatException nfe4) {
+                        problemDisplayer = "Make sure to enter a valid number.";
+                    }
+
+                    try {
+                        int test = numerator / denominator;
+                    } catch (ArithmeticException ae1) {
+                        problemDisplayer = "Make sure denominator is not 0";
+                    }
+
+                    inputMixedFraction = new MixedFraction(numerator, denominator, 0);
+                    return inputMixedFraction;
+                }
+                case 3 -> { //e.g "1 2/3"
+
+                    try {
+                        wholeNumber = Integer.parseInt(input[0]);
+                        numerator = Integer.parseInt(input[1]);
+                        denominator = Integer.parseInt(input[2]);
+                    } catch (NumberFormatException nfe4) {
+                        problemDisplayer = "Make sure to enter a valid number.";
+                    }
+
+                    try {
+                        int test = numerator/denominator;
+                    } catch (ArithmeticException ae2) {
+                        problemDisplayer = "Make sure denominator is not 0";
+                    }
+
+                    inputMixedFraction = new MixedFraction(numerator,denominator,wholeNumber);
+                    return inputMixedFraction;
+                }
+            }
+            return inputMixedFraction;
+        }//end of parseFraction method
+    }//end of Calculator class
+}
