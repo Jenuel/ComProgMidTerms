@@ -1,3 +1,103 @@
+/**
+*
+* Group Members:
+* Alvarez, Maria Alexandra
+* Balogo, Renuel Jeremi
+* Cagulada, Sheryn Ann
+* Lumanglas, Yenzy Hynna
+* Palacay, Abigail
+*
+* Class Code and Schedule: 9315 CS122 MTh 9:00 - 10:30
+*
+* Summary of exception handling added to the MixedFraction project:
+*
+*  1. Added a try catch block in the slash button part of the ButtonsHandler class for the division of mixed fractions. 
+* This is to handle exceptions such as ArithmeticException. The purpose of this exception is so that the denominator is not zero.
+*       case '/' -> {
+*                           MixedFraction answer3;
+*                           try {
+*                               answer3 = mixedFrac1.divide(mixedFrac2);
+*                               operationsTF.setText(answer3 + " or " + answer3.toDouble());
+*                           } catch (ArithmeticException ex1){
+*                               problemDisplayer = "Divisor cannot be 0";
+*                           }
+*
+*                           if (operationsTF.getText().equals("")){
+*                               operationsTF.setText("Divisor cannot be 0");
+*                               fraction1TF.setText("");
+*                               fraction2TF.setText("");
+*                               problemDisplayer = "";
+*                           }
+*                       }
+*  2. Added a try catch block in the parseFraction method to handle exceptions for the input data entered. 
+* For case 1 the exception that was added is NumberFormatException. And as for case 2 and 3, a NumberFormatException 
+* and ArithmeticException was added. The purpose of NumberFormatException is so that the numerator is greater than or 
+* equal to zero. While the purpose of the ArithmeticException is so that the denominator is not zero.
+*       private MixedFraction parseFraction(String fraction) {
+*
+*           String[] input = fraction.split("[ /]", 3);
+*
+*           MixedFraction inputMixedFraction = new MixedFraction();
+*
+*           int wholeNumber = 0;
+*           int numerator = 0;
+*           int denominator = 1;
+*
+*           switch (input.length) {
+*               case 1 -> { //e.g "1"
+*
+*                   try {
+*                       wholeNumber = Integer.parseInt(input[0]);
+*                   } catch (NumberFormatException nfe1) {
+*                       problemDisplayer = "Make sure to enter a valid number.";
+*                   }
+*
+*                   inputMixedFraction = new MixedFraction(0, 1, wholeNumber);
+*                   return inputMixedFraction;
+*               }
+*               case 2 -> { // e.g "1/2"
+*
+*                   try {
+*                       numerator = Integer.parseInt(input[0]);
+*                       denominator = Integer.parseInt(input[1]);
+*                   } catch (NumberFormatException nfe4) {
+*                       problemDisplayer = "Make sure to enter a valid number.";
+*                   }
+*
+*                   try {
+*                       int test = numerator / denominator;
+*                   } catch (ArithmeticException ae1) {
+*                       problemDisplayer = "Make sure denominator is not 0";
+*                   }
+*
+*                   inputMixedFraction = new MixedFraction(numerator, denominator, 0);
+*                   return inputMixedFraction;
+*               }
+*               case 3 -> { //e.g "1 2/3"
+*
+*                   try {
+*                       wholeNumber = Integer.parseInt(input[0]);
+*                       numerator = Integer.parseInt(input[1]);
+*                       denominator = Integer.parseInt(input[2]);
+*                   } catch (NumberFormatException nfe4) {
+*                       problemDisplayer = "Make sure to enter a valid number.";
+*                   }
+*
+*                   try {
+*                       int test = numerator/denominator;
+*                   } catch (ArithmeticException ae2) {
+*                       problemDisplayer = "Make sure denominator is not 0";
+*                   }
+*
+*                   inputMixedFraction = new MixedFraction(numerator,denominator,wholeNumber);
+*                   return inputMixedFraction;
+*               }
+*           }
+*           return inputMixedFraction;
+*       }//end of parseFraction method
+*
+*
+**/
 package prog2.prelimgroup;
 
 import javax.swing.*;
