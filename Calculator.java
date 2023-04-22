@@ -105,6 +105,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Calculator represents a GUI class that can perform arithmetic
+ * operations on mixed fractions.
+ */
 public class Calculator extends JFrame {
     private final JTextField fraction1TF = new JTextField(6);
     private final JTextField fraction2TF = new JTextField(6);
@@ -119,6 +123,11 @@ public class Calculator extends JFrame {
     private JButton calculateBtn, clrButton, toOperations, toReduce, calculateBtn2, clrButton2;
     private final CardLayout cl = new CardLayout();
 
+    /**
+     * Creates no-argument constructor.
+     * <p>Initializes the GUI components, and sets up the layout of
+     * the calculator and attributes of the app's window.</p>
+     */
     public Calculator() {
 
         operationsTF.setEditable(false);
@@ -177,8 +186,13 @@ public class Calculator extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
 
-    }
+    } //end of Calculator method
 
+    
+    /**
+     * Runs the calculator program (main method).
+     * @param args The command-line arguments
+     */
     public static void main(String[] args) {
         Calculator test;
         try {
@@ -186,10 +200,15 @@ public class Calculator extends JFrame {
         } catch (Exception ex){
             ex.printStackTrace();
         }
-    }
+    } //end of main method
 
     /**
-     * Set operation panel which includes the text fields for fraction 1 and 2, combo box for operations and labels
+     * Sets operation panel. which includes the text fields for
+     * fraction 1 and 2, combo box for operations and labels
+     * <p>Initializes combo box for basic math operations, and labels
+     * for fraction 1 and 2.</p>
+     * <p>Appends components for fraction 1 and 2 text fields</p>
+     * @param panel The operations panel
      */
     private void setOperationPanel(JPanel panel) {
 
@@ -206,11 +225,13 @@ public class Calculator extends JFrame {
         panel.add(fraction2TF);
         panel.add(new JLabel(" = ?"));
 
-    }
+    } //end of setOperationPanel method
 
     /**
-     * Set button panel for the first panel which includes a calculate button, clear button, and toReduce button
-     * to switch to the second panel
+     * Sets button panel for the first panel.
+     * <p>Creates three buttons for operations panel: calculate
+     * button, clear button, and reduce fraction button.</p>
+     * @param panel The button panel for operations
      */
     private void setButtonPanel(JPanel panel) {
 
@@ -229,19 +250,23 @@ public class Calculator extends JFrame {
         panel.add(calculateBtn);
         panel.add(clrButton);
         panel.add(toReduce);
-    }
+    } //end of setButtonPanel method
 
     /**
-     * Set reduce panel which includes a JLabel, and reduce fraction text field
+     * Sets reduce (second) panel.
+     * <p>Appends components, JLabel and text field for reduce fraction</p>
+     * @param panel The reduce panel
      */
     private void setReducePanel(JPanel panel) {
         panel.add(new JLabel("Reduce Fraction: "));
         panel.add(reduceFractionTF);
-    }
+    } //end of setReducePanel method
 
     /**
-     * Set button panel for the second panel which include a calculate button, clear button, and toOperations
-     * button to switch to the first panel
+     * Sets button panel for the second panel.
+     * <p>Creates three buttons for reduce fraction panel: calculate
+     * button, clear button, and perform operations button.</p>
+     * @param panel The button panel for reduce fraction
      */
     private void setButtonPanel2(JPanel panel) {
         // calculate button
@@ -260,12 +285,34 @@ public class Calculator extends JFrame {
         panel.add(calculateBtn2);
         panel.add(clrButton2);
         panel.add(toOperations);
-    }
+    } //end of setButtonPanel2 method
 
     /**
-     * ButtonsHandler class
+     * ButtonsHandler class processes action events.
      */
     private class ButtonsHandler implements ActionListener {
+    
+        /**
+         * <p>If source of event is combo box, then operator is based
+         * on selected choice</p>
+         * <p>If the calculate button on first panel is pressed:</p>
+         * <p>- first checks if both text fields have fraction inputs, and
+         * displays error message when incomplete.</p>
+         * <p>- then performs appropriate arithmetic operation on the two
+         * fractions by calling corresponding method, afterwards results
+         * are displayed.</p>
+         * <p>If the calculate button on second panel is pressed, works
+         * similarly to the first one, but requires only one fraction input
+         * and instead of performing operations, results from reducing a
+         * fraction are displayed.</p>
+         * <p>If the clear button is pressed, then all input and output
+         * fields are removed.</p>
+         * <p>If the reduce fraction button is pressed, then program
+         * switches to show reduce fraction panel.</p>
+         * <p>If the perform operations button is pressed, then program
+         * switches back to show operations panel.</p>
+         * @param e the event to be processed
+         */    
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == boxOperator) {
                 selectedOperator = (char) boxOperator.getSelectedItem();
@@ -362,11 +409,28 @@ public class Calculator extends JFrame {
             if (e.getSource() == toOperations) {
                 cl.show(content, "1");
             }
-        }
+        } //end of actionPerformed method
 
 
         /**
-         * parseFraction method to read the input
+         * Reads input fraction and returns it as a Mixed Fraction.
+         * <p>Splits the fraction string by spaces or slashes into an
+         * array of String elements.</p>
+         * <p>Initializes variables of a mixed fraction.</p>
+         * <p>Initializes new Mixed Fraction for the parsed fraction
+         * returned by the switch statement:</p>
+         * <p>(Each cases checks invalid input, then displays appropriate
+         * error message.)</p>
+         * <p>- Case 1 if input only has one element, it represents a
+         * whole number.</p>
+         * <p>- Case 2 if input has two elements, represents a
+         * fraction.</p>
+         * <p>- Case 3 if input has three elements, represents a
+         * mixed fraction.</p>
+         * <p>Sets the Mixed Fraction what mixed fraction was represented</p>
+         * @param fraction The input fraction
+         * @return <code> MixedFraction </code> representing the new Mixed
+         * Fraction that was converted input string fraction
          */
         private MixedFraction parseFraction(String fraction) {
 
